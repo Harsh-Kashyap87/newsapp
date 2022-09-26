@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Website</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    
+    <link rel="stylesheet" href="css.css">
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    
+</head>
+<body>
+    <header>
+        <img src="news2.png" alt="logo">
+        <h1>
+            News Room
+        </h1>
+    </header>
+    <main>
+        <!-- heading -->
+        <section>
+           <div class="main">
+            <div class="head">
+                <img src="news1.png"alt="img">
+                <div class="input">
+                    <input type="text" id="keyword">
+                    <button onclick="getnews()">Search</button>
+                </div>
+            </div>
+           </div>
+        </section>
+
+
+<!-- Spinner -->
+<div class="spinner">
+    <div class="loader" id="load"></div>
+</div>
+
+
+        <!-- content -->
+        <section class="cards">
+            <!-- <div class="card">
+                <div class="content">
+                    <div class="img">
+                        <img src="img.jpg" alt="">
+                    </div>
+                    <div class="details">
+                        <h3>Heading</h3>
+                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus</p>
+                        <p>Lorem, ipsum dolor sit amet consectetur </p>
+                        <p>
+                            <a href="">Read More</a>
+                        </p>
+                    </div>
+                    <hr>
+                </div>
+            </div> -->
+            
+        </section>
+    </main>
+    <footer>
+
+    </footer>
+
+
+    <!-- <script src="app.js"></script> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
+<script>
+    getnews();
+    function getnews(){
+
+    $(".cards").text("");
+    
+    var keyword = $("#keyword").val();
+    if(keyword ==''){
+        keyword="latest";
+    }
+    let url = "https://newsapi.org/v2/everything?q=" + keyword + "&apiKey=d53d5c49a0dd4c83994aaf7a3d76ee10";
+
+    $("#load").show();
+$.get(url, (response)=>{
+    $("#load").hide();
+
+    console.log(response.articles[0]);
+    for(i=0; i<response.articles.length; i++){
+        let html = `<div class="card">
+                <div class="content">
+                    <div class="img">
+                        <img src="${response.articles[i].urlToImage}" alt="Loading">
+                    </div>
+                    <div class="details">
+                        <h3>${response.articles[i].title}</h3>
+                        <p>${response.articles[i].description
+}</p>
+                        <p>${truncateString((response.articles[i].content), 200)}</p>
+                        <p class="publicer">Publiced at : ${truncateString((response.articles[i].publishedAt
+), 200)}</p>
+                        <p>
+                            <a href="${response.articles[i].url}" target="_blank" >Read More</a>
+                        </p>
+                    </div>
+                    <hr>
+                </div>
+            </div>`;
+                $(".cards").append(html);
+        }
+            function truncateString(str, num) {
+                if (str.length > num) {
+                    return str.slice(0, num) + "...";
+                } 
+                else {
+                    return str;
+                }
+        }
+    })
+}
+</script>
+
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+  
+</body>
+
+</html>
